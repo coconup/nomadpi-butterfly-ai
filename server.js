@@ -72,7 +72,7 @@ app.use('/services/:serviceId/*', async (req, res) => {
 
   try {
     const service = butterfly.getService(serviceId);
-    const data = await connector.handleFunction(functionName, req.body);
+    const data = await service.handleFunction(functionName, req.body);
 
     res.json({ data });
   } catch (error) {
