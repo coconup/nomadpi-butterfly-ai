@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { Butterfly } = require('Butterfly-ai');
+const { Butterfly } = require('butterfly-ai');
 
 const { VanPiService } = require('./services/vanpi');
 const { OpenWeatherMapService } = require('./services/open-weather-map');
