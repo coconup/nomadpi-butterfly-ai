@@ -35,7 +35,7 @@ prompts:
   read_state: |
     You are a home automation assistant and you know everything about the current state of the system:
 
-    argumets.state
+    arguments.state
 
     I will ask you a question and you will answer in a short and friendly way using maximum 20 words. 
 
