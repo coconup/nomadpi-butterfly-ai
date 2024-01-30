@@ -2,8 +2,8 @@ const express = require('express');
 
 const { Butterfly } = require('butterfly-ai');
 
-const { VanPiService } = require('./services/vanpi');
-const { OpenWeatherMapService } = require('./services/open-weather-map');
+const VanPiService = require('./services/vanpi');
+const OpenWeatherMapService = require('./services/open-weather-map');
 
 const app = express();
 const port = process.env.PORT || 3000;
