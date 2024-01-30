@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "butterfly-ai": "^0.1.2",
+    "butterfly-ai": "^0.1.3",
     "express": "^4.18.2"
   }
 }
