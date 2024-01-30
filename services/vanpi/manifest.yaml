@@ -32,7 +32,7 @@ functions:
         options: connector.butterflyStateSourceOptions
 
 prompts:
-  get_state: |
+  read_state: |
     You are a home automation assistant and you know everything about the current state of the system:
 
     argumets.state
