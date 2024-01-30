@@ -1,0 +1,28 @@
+service_name: Open Weather Map
+match_prompt: |
+  A request for weather information, including current weather conditions and weather forecast information.
+functions:
+  - name: query
+    description: Answers a question about the current weather or the weather forecast.
+    arguments:
+      - name: original_prompt
+        type: text
+        value: original_prompt
+prompts:
+  query: |
+    You are the weather man and you know everything about the current and upcoming weather:
+
+    connector.getWeatherInfo
+
+    Consider that the current date is connector.getCurrentDate , therefore extract information from the weather report accordingly.
+
+    I will ask you a question and you will answer in a short and friendly way using maximum 20 words. 
+
+    Only answer the question I asked and avoid listing weather information which is not directly relevant to the question. 
+    Avoid introductory words such as "Certaily", "Got it", "Understood". 
+    
+    Also avoid follow up questions at the end of your answer.
+
+    If reading timestamps or dates, read them in a humanly understandable way.
+
+    Here is the question: arguments.original_prompt

@@ -1,0 +1,49 @@
+service_name: VanPi
+match_prompt: |
+  A command to interact with a local IoT environment
+functions:
+  - name: toggle
+    description: Activates a relay, a wifi relay, an action switch or a mode switch
+    arguments:
+      - name: switch_name
+        type: select
+        description: The name of switch to be activated. only one option can be chosen
+        options: connector.butterflySwitchOptions
+      - name: state
+        type: select
+        description: whether to turn the switch ON or OFF
+        options:
+          - value: on
+          - value: off
+  - name: read_state
+    description: |
+      Reads the current state of an IoT system and its components, including:
+        - values reported by various sensors (temperature, tank level, batteries, solar power)
+        - the state of different devices and appliances (on/off)
+        - geolocation information
+    arguments:
+      - name: original_prompt
+        type: text
+        value: original_prompt
+      - name: source_id
+        type: select
+        description: |
+          The sensor or device of which the state is being requested, or which can answer the question that is being asked.
+        options: connector.butterflyStateSourceOptions
+
+prompts:
+  get_state: |
+    You are a home automation assistant and you know everything about the current state of the system:
+
+    argumets.state
+
+    I will ask you a question and you will answer in a short and friendly way using maximum 20 words. 
+
+    Only answer the question I asked and avoid listing parts of the state which are not directly relevant to the question. 
+    Avoid introductory words such as "Certaily", "Got it", "Understood". 
+    
+    Also avoid follow up questions at the end of your answer.
+
+    If reading timestamps, consider they are in UTC and only give information up to the minute.
+
+    Here is the question: arguments.original_prompt
