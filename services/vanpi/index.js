@@ -59,7 +59,7 @@ class VanPiService extends Service(__dirname) {
       state = resourcesState[resourceId];
     }
 
-    const prompt = getPrompt('read_state', { original_prompt, state });
+    const prompt = this.getPrompt('read_state', { original_prompt, state });
 
     const result = await this.llm.client.query(prompt, { ttsTarget: true });
 
