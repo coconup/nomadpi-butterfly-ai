@@ -24,14 +24,14 @@ async function initialize() {
   const openAiCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-ai`);
   const openWeatherMapCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-weather-map`);
 
-  console.log('openAiCredentials', JSON.stringify(openAiCredentials))
-  console.log('openWeatherMapCredentials', JSON.stringify(openWeatherMapCredentials))
+  console.log('openAiCredentials', JSON.stringify(openAiCredentials.data))
+  console.log('openWeatherMapCredentials', JSON.stringify(openWeatherMapCredentials.data))
 
-  openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapCredentials.value.api_key });
+  openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapCredentials.data.value.api_key });
   butterfly = new Butterfly({
     adapter: 'open_ai',
     options: {
-      apiKey: openAiCredentials.value.api_key
+      apiKey: openAiCredentials.data.value.api_key
     },
     debug,
     services: [
