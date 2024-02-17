@@ -22,14 +22,14 @@ let openWeatherMap;
 
 async function initialize() {
   try {
-    const openAiApiKey = await axios.get(`${servicesApiRootUrl}/credentials/service/open-ai`);
-    const openWeatherMapApiKey = await axios.get(`${servicesApiRootUrl}/credentials/service/open-weather-map`);
+    const openAiCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-ai`);
+    const openWeatherMapCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-weather-map`);
 
-    openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapApiKey });
+    openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapCredentials.api_key });
     butterfly = new Butterfly({
       adapter: 'open_ai',
       options: {
-        apiKey: openAiApiKey
+        apiKey: openAiCredentials.api_key
       },
       debug,
       services: [
