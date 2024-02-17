@@ -21,25 +21,24 @@ let butterfly;
 let openWeatherMap;
 
 async function initialize() {
-  try {
-    const openAiCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-ai`);
-    const openWeatherMapCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-weather-map`);
+  const openAiCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-ai`);
+  const openWeatherMapCredentials = await axios.get(`${servicesApiRootUrl}/credentials/service/open-weather-map`);
 
-    openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapCredentials.value.api_key });
-    butterfly = new Butterfly({
-      adapter: 'open_ai',
-      options: {
-        apiKey: openAiCredentials.value.api_key
-      },
-      debug,
-      services: [
-        openWeatherMap,
-        vanPi
-      ]
-    });
-  } catch (error) {
-    console.error('Error during initialization:', error.message);
-  }
+  console.log('openAiCredentials', JSON.stringify(openAiCredentials))
+  console.log('openWeatherMapCredentials', JSON.stringify(openWeatherMapCredentials))
+
+  openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapCredentials.value.api_key });
+  butterfly = new Butterfly({
+    adapter: 'open_ai',
+    options: {
+      apiKey: openAiCredentials.value.api_key
+    },
+    debug,
+    services: [
+      openWeatherMap,
+      vanPi
+    ]
+  });
 };
 
 app.use(async (req, res, next) => {
