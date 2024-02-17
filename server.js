@@ -10,31 +10,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const servicesApiRootUrl = process.env.SERVICES_API_ROOT_URL;
+const debug = process.env.DEBUG || false;
 
 if(!servicesApiRootUrl) throw `\`$SERVICES_API_ROOT_URL\` is not set`;
 
-// const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').filter(s => !!s).map(s => s.trim());
-
-const vanPi = new VanPiService();
-
 app.use(express.json());
 
-// Add headers before the routes are defined
-// app.use(function (req, res, next) {
-//   console.log(`Request from origin \`${req.headers.origin}\``)
-//   if (allowedOrigins.includes(req.headers.origin)) {
-//     res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-//   } else {
-//     console.log(`Rejected request from origin \`${req.headers.origin}\``)
-//   }
-
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type,Accept');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-
-//   next();
-// });
-
+const vanPi = new VanPiService();
 let butterfly;
 let openWeatherMap;
 
@@ -43,19 +25,18 @@ async function initialize() {
     const openAiApiKey = await axios.get(`${servicesApiRootUrl}/credentials/service/open-ai`);
     const openWeatherMapApiKey = await axios.get(`${servicesApiRootUrl}/credentials/service/open-weather-map`);
 
+    openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapApiKey });
     butterfly = new Butterfly({
       adapter: 'open_ai',
       options: {
         apiKey: openAiApiKey
       },
-      debug: process.env.DEBUG,
+      debug,
       services: [
         openWeatherMap,
         vanPi
       ]
     });
-
-    openWeatherMap = new OpenWeatherMapService({ apiKey: openWeatherMapApiKey });
   } catch (error) {
     console.error('Error during initialization:', error.message);
   }
