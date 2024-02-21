@@ -3,7 +3,7 @@ const axios = require('axios');
 
 const { Butterfly } = require('butterfly-ai');
 
-const VanPiService = require('./services/vanpi');
+const NomadPiService = require('./services/nomadpi');
 const OpenWeatherMapService = require('./services/open-weather-map');
 
 const app = express();
@@ -16,7 +16,7 @@ if(!servicesApiRootUrl) throw `\`$SERVICES_API_ROOT_URL\` is not set`;
 
 app.use(express.json());
 
-const vanPi = new VanPiService();
+const vanPi = new NomadPiService();
 let butterfly;
 let openWeatherMap;
 

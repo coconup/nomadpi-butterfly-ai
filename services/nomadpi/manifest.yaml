@@ -1,4 +1,4 @@
-service_name: VanPi
+service_name: nomadPi
 match_prompt: |
   A command to interact with a local IoT environment
 functions:

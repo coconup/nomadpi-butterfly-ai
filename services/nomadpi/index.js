@@ -5,7 +5,7 @@ const headers = {
   'Origin': 'http://localhost:3000'
 };
 
-class VanPiService extends Service(__dirname) {
+class NomadPiService extends Service(__dirname) {
   get resourceNames() {
     return {
       relay: 'relays',
@@ -241,4 +241,4 @@ class VanPiService extends Service(__dirname) {
   }
 }
 
-module.exports = VanPiService;
+module.exports = NomadPiService;
