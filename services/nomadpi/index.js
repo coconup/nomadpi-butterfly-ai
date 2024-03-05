@@ -1,9 +1,9 @@
 const { Service } = require('butterfly-ai');
 
-const coreApiRootUrl = process.env.CORE_API_ROOT_URL;
+const appApiRootUrl = process.env.APP_API_ROOT_URL;
 
-if(!coreApiRootUrl) {
-  throw new Error('CORE_API_ROOT_URL environment variable is required');
+if(!appApiRootUrl) {
+  throw new Error('APP_API_ROOT_URL environment variable is required');
 }
 
 const headers = {
@@ -51,7 +51,7 @@ class NomadPiService extends Service(__dirname) {
 
     let state;
     if(source_id === 'gps') {
-      state = await this.getRequest(`${coreApiRootUrl}/gps/state`, headers);
+      state = await this.getRequest(`${appApiRootUrl}/gps/state`, headers);
     } else {
       const [
         resourceType,
@@ -59,7 +59,7 @@ class NomadPiService extends Service(__dirname) {
       ] = source_id.split('-');
       
       const resourceName = this.resourceNames[resourceType];
-      const resourcesState = await this.getRequest(`${coreApiRootUrl}/${resourceName}/state`, headers);
+      const resourcesState = await this.getRequest(`${appApiRootUrl}/${resourceName}/state`, headers);
 
       state = resourcesState[resourceId];
     }
@@ -88,20 +88,20 @@ class NomadPiService extends Service(__dirname) {
     ] = switch_name.split('-');
 
     const resourceName = this.resourceNames[switchType];
-    const result = await this.postRequest(`${coreApiRootUrl}/${resourceName}/${switchId}/state`, { state: state === 'on', actor: switch_name }, headers);
+    const result = await this.postRequest(`${appApiRootUrl}/${resourceName}/${switchId}/state`, { state: state === 'on', actor: switch_name }, headers);
 
     return result;
   }
 
   // Support functions
   async getSwitch(switchType, switchId) {
-    const switches = await this.getRequest(`${coreApiRootUrl}/${switchType}`, headers);
+    const switches = await this.getRequest(`${appApiRootUrl}/${switchType}`, headers);
     return switches.find(item => item.id === switchId);
   }
 
   // Manifest functions
   async getUsedSwitches() {
-    const switchGroups = await this.getRequest(`${coreApiRootUrl}/switch_groups`, headers);
+    const switchGroups = await this.getRequest(`${appApiRootUrl}/switch_groups`, headers);
     const usedSwitches = switchGroups.map(({switches: jsonString}) => JSON.parse(jsonString)).flat();
 
     const switchTypes = [
@@ -113,7 +113,7 @@ class NomadPiService extends Service(__dirname) {
 
     const switches = await Promise.all(switchTypes.map(switchType => {
       return (
-        this.getRequest(`${coreApiRootUrl}/${switchType}`, headers)
+        this.getRequest(`${appApiRootUrl}/${switchType}`, headers)
           .then(result => {
             return result.map(({ id, name }) => {
               let type;
@@ -142,7 +142,7 @@ class NomadPiService extends Service(__dirname) {
   };
 
   async butterflySwitchOptions() {
-    const switchGroups = await this.getRequest(`${coreApiRootUrl}/switch_groups`, headers);
+    const switchGroups = await this.getRequest(`${appApiRootUrl}/switch_groups`, headers);
 
     if(switchGroups.error) {
       throw new Error('Error fetching `switch_groups`')
@@ -159,12 +159,12 @@ class NomadPiService extends Service(__dirname) {
 
   async butterflyStateSourceOptions() {
     const apiData = await Promise.all([
-      this.getRequest(`${coreApiRootUrl}/water_tanks`, headers),
-      this.getRequest(`${coreApiRootUrl}/sensors`, headers),
-      this.getRequest(`${coreApiRootUrl}/batteries`, headers),
-      this.getRequest(`${coreApiRootUrl}/cameras`, headers),
-      this.getRequest(`${coreApiRootUrl}/temperature_sensors`, headers),
-      this.getRequest(`${coreApiRootUrl}/solar_charge_controllers`, headers),
+      this.getRequest(`${appApiRootUrl}/water_tanks`, headers),
+      this.getRequest(`${appApiRootUrl}/sensors`, headers),
+      this.getRequest(`${appApiRootUrl}/batteries`, headers),
+      this.getRequest(`${appApiRootUrl}/cameras`, headers),
+      this.getRequest(`${appApiRootUrl}/temperature_sensors`, headers),
+      this.getRequest(`${appApiRootUrl}/solar_charge_controllers`, headers),
       this.getUsedSwitches()
     ]);
 
